@@ -1,29 +1,24 @@
 ---
-title: "R Control control structures"
+title: "R Control structures"
 author: "Hafez Ahmad"
 date: "`r Sys.Date()`"
 output: html_document
 ---
  The most common control structures are:
-1. *** `if` *** statements: These allow you to execute a block of code only if a certain condition is met.
+ 
+1. ***if*** statements: These allow you to execute a block of code only if a certain condition is met.
+2. ***ifelse*** statements: These are a shorthand for a simple if-else condition.
 
-2. *** `for` *** loops: These allow you to repeat a block of code a fixed number of times.
+3. ***for*** loops: These allow you to repeat a block of code a fixed number of times.
 
-3. *** `while` *** loops: These allow you to repeat a block of code an unknown number of times, until a certain condition is met.
+4. ***while*** loops: These allow you to repeat a block of code an unknown number of times, until a certain condition is met.
 
-4. *** `repeat` *** loops: These are similar to while loops, but they always execute at least once, regardless of the condition being met or not.
+5. ***repeat*** loops: These are similar to while loops, but they always execute at least once, regardless of the condition being met or not.
 
 ![Figure 1. Loops in R program.](E:/1 Master's/MSU/course classes/Spring2023\WFA 7000/loop.jpg)
 
 
-5. *** `ifelse` *** statements: These are a shorthand for a simple if-else condition.
-
-`if (condition) {
-  # statements to be executed if condition is true
-} else {
-  # statements to be executed if condition is false
-}`
-
+## Example of `if`
 ```{r}
 x <- 2
 if (x > 0) {
@@ -49,6 +44,7 @@ for (i in 1:5) {
 }
 
 ```
+
 
 `while (condition) { # statements to be executed }`
 ```{r}
@@ -274,6 +270,15 @@ tapply(x, group, mean)
 
 ```
 
+## List comprehensions
+
+```{r}
+n <- 10
+squared_numbers <- sapply(1:n, function(i) i^2)
+squared_numbers
+
+```
+# Really faster ?
 
 2.map functions from the purrr package: These functions provide a more modern and flexible alternative to the apply functions, allowing you to apply a function to elements of a list, vector, or data frame and return the result in a tidy format. Examples include map, map_dbl, and map2.
 ```{r}
@@ -328,7 +333,63 @@ group <- rep(1:5, each = 20)
 aggregate(x, by = list(group), mean)
 
 ```
+## Benchmark
+```{r}
+# For loop , squared one million
+start_time_for_loop <- Sys.time()
+squared_numbers_for_loop <- c()
+for (i in 1:1000000) {
+  squared_numbers_for_loop[i] <- i^2 /i
+}
+end_time_for_loop <- Sys.time()
+time_for_loop <- end_time_for_loop - start_time_for_loop
 
+# List comprehension
+start_time_list_comp <- Sys.time()
+squared_numbers_list_comp <-  sapply(1:1000000, function(i) i^2/i)
+end_time_list_comp <- Sys.time()
+time_list_comp <- end_time_list_comp - start_time_list_comp
+# Vectorizing
+start_time <- Sys.time()
+result2 <- (1:1000000)^2/(1:1000000)
+end_time <- Sys.time()
+time_taken2 <- end_time - start_time
 
-#Conclusion
+# Compare execution times
+cat("Time taken by for loop:", time_for_loop, "seconds\n")
+cat("Time taken by list comprehension:", time_list_comp, "seconds\n")
+
+cat("Time taken by vectorized operation:", time_taken2, "seconds\n")
+
+```
+# Vectorization 
+```{r}
+# regular 
+sum_of_squares <- 0
+for (i in 1:10) {
+  sum_of_squares <- sum_of_squares + i^2
+}
+print(sum_of_squares)
+# Vectorization 
+sum_of_squares <- sum(1:10^2)
+print(sum_of_squares)
+```
+Here are some ways to vectorize your R code:
+
+1. Use vector or matrix operations: Whenever possible, use vector or matrix operations instead of loops. For example, instead of using a for loop to add two vectors element-wise, you can simply add the vectors using the + operator.
+
+2. Use built-in functions: R has many built-in functions that are designed to work with vectors and matrices. For example, instead of using a for loop to find the mean of a vector, you can use the mean function.
+
+3. Use the apply family of functions: The apply family of functions (apply, lapply, sapply, and mapply) allows you to apply a function to the elements of a matrix, list, or data frame. This can be faster than using a for loop.
+
+4. Use the *apply functions: The *apply functions (tapply, rapply, and eapply) allow you to apply a function to subsets of data, based on grouping variables or other factors.
+
+5. Use the purrr package: The purrr package provides a modern and flexible alternative to the apply family of functions, with a focus on simplicity and consistency.
+
+6. Use the dplyr package: The dplyr package provides a convenient way to perform common data manipulation tasks, such as filtering and aggregating data, without using loops.
+
+7. Avoid using loops in functions: If you are writing a function that will be called many times, it is best to avoid using loops in the function, as this can slow down your code. Instead, try to use vector or matrix operations, or use one of the apply family of functions.
+
+# Conclusion
 Each of these alternatives has its own advantages and limitations, and the choice of which one to use will depend on the specific requirements of your analysis.
+
