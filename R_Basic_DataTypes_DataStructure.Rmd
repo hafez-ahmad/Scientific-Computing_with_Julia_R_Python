@@ -1,0 +1,334 @@
+---
+title: "WFA-DIS-7000"
+author: "Hafez Ahmad"
+date: "`r Sys.Date()`"
+output: html_document
+---
+# Data types
+
+1. **Numeric**: numbers (e.g. 1, 2.5, -3)
+2. **Integer**: whole numbers (e.g. 1, 2, -3)
+3. **Character**: words or letters (e.g. "hello", "a", "abc")
+4. **Logical**: TRUE or FALSE
+5. **Complex**: complex numbers (e.g. 1+2i)
+6. **Raw**: raw binary data
+
+![Figure . Data types in R program.](E:/1 Master's/MSU/course classes/Spring2022/WFA8990/script/datatypoes.JPG)
+
+```{r}
+# Numeric
+x <- 3.14
+y <- -2
+z <- 0
+print(paste0('class of x is ', class(x)))
+print(paste0('Type of x is ',typeof(x)))
+
+print(paste0('After integer conversion, x is : ',typeof(as.integer(x))))
+
+# Integer
+a <- 2L
+b <- -4L
+c <- 0L
+print(typeof(a))
+# Character
+# Character is number, letters, and accepted symbols in either single or double quotations.
+greeting <- "hello"
+farewell <- "goodbye"
+language <- "R is great!"
+print(paste0('type of greeting variable is ',typeof(greeting)))
+# What type is “123”? Numberic?
+x<-"123"
+print(paste0('x is ',typeof(x)))
+# Logical
+is_true <- TRUE
+is_false <- FALSE
+print(c(TRUE, TRUE, FALSE, NA))
+# Complex
+a <- 2+3i
+b <- -1+4i
+c <- 0+2i
+print(typeof(a))
+
+```
+
+
+
+
+# Data structure
+
+1.  **Vectors**: A vector is a one-dimensional array of data. It can store numeric, character, and logical data types. You can create a vector using the c() function.
+
+2.  **Lists**: A list is a collection of elements that can be of different types, including vectors, matrices, and other lists. You can create a list using the list() function.
+
+3.  **Matrices**: A matrix is a two-dimensional array of data with rows and columns. You can create a matrix using the matrix() function.
+
+4.  **Arrays**: An array is a multi-dimensional array of data with more than two dimensions. You can create an array using the array() function.
+
+5.  **Data Frames**: A data frame is a two-dimensional table-like structure that can store different types of data. It is similar to a matrix but can store different types of data in different columns. You can create a data frame using the data.frame() function.
+
+
+## Vector
+```{r}
+numeric_vector <- c(1, 2, 3, 4, 5)
+numeric_vector
+print(typeof(numeric_vector))
+typeof(1:5)
+typeof(seq(1,5))
+typeof(1)
+```
+##list
+```{r}
+list_example <- list(c("a", "b", "c"), c(1, 2, 3))
+list_example
+# complex list
+a <- list(a = 1:3, b = "a string", c = pi, d = list(-1, -5))
+
+```
+## Matrix
+```{r}
+matrix(rep('a',9),nrow = 3)
+```
+
+```{r}
+matrix_example <- matrix(1:9, nrow = 3, ncol = 3)
+matrix_example
+
+```
+```{r}
+# or
+m1 <- c(1,2,3)
+m2 <- c(4,5,6)
+m3 <- c(7,8,9)
+matrix(c(m1,m2,m3), nrow = 3, ncol = 3, byrow = TRUE)
+
+```
+```{r}
+identity_matrix <- diag(c(1,1,1))
+#  random matrix
+random_matrix <- matrix(runif(9), nrow = 3, ncol = 3)
+# rnorm() to generate random numbers from a normal distribution.
+
+random_matrix <- matrix(rnorm(9), nrow = 3, ncol = 3)
+
+```
+
+## Array 
+```{r}
+array_example <- array(1:24, dim = c(2,3,4))
+```
+```{r}
+ar<- array(1:64,dim=c(4,4,4))
+```
+
+
+```{r}
+array_example
+```
+## Dataframe 
+```{r}
+# create vectors
+name <- c("Alice", "Bob", "Charlie", "David")
+age <- c(25, 30, 35, 40)
+gender <- c("F", "M", "M", "M")
+class(name)
+# create data frame
+df <- data.frame(name, age, gender)
+df
+
+```
+
+### Indexing or Accessing data from them
+### From vector:  square brackets [] operator and specifying the index of the element you want to access, starting from 1. 
+```{r}
+x <- c(1, 2, 3, 4, 5)
+x[1]
+```
+```{r}
+x <- c("one", "two", "three", "four", "five")
+x[c(3, 2, 5)]
+```
+
+### From list double square brackets [[]] operator 
+
+```{r}
+x <- list(a = 1, b = 2, c = 3)
+x[[1]]
+# or $
+x$a
+```
+### From Matrix
+```{r}
+
+# from matrix 
+# Create a matrix with 3 rows and 2 columns
+my_matrix <- matrix(1:6, nrow = 3, ncol = 2)
+
+# Access the element at the 2nd row and 1st column
+my_matrix[2,1]
+# first column
+my_matrix[,1]
+
+print(dim(my_matrix))
+#  from array 
+# Create a 3D array with dimensions 2x3x4
+my_array <- array(1:24, dim = c(2, 3, 4))
+# Access the element at the 2nd dimension, 3rd row, and 4th column
+my_array[2, 3, 4]
+# dataframe
+```
+#### Dataframe 
+```{r}
+df <- data.frame(name, age, gender, row.names = c("A", "B", "C", "D"))
+print(df)
+# changing row name 
+rownames(df) <- c("A1", "B2", "C3", "D4")
+print(df)
+```
+
+```{r}
+# add new column
+df$height <- c(160, 170, 180, 190)
+# or
+df[["weight"]] <- c(60, 70, 80, 90)
+```
+```{r}
+# add new row
+new_row <- c("Eve", 45, "F", 165, 55)
+df <- rbind(df, new_row)
+```
+### Converting data structure
+```{r}
+#Converting a data frame to a matrix:
+
+mat <- as.matrix(df)
+#Converting a matrix to a data frame:
+matrix_name<- matrix(c(m1,m2,m3), nrow = 3, ncol = 3, byrow = TRUE)
+df <- as.data.frame(matrix_name)
+#Converting a list to a matrix:
+
+mat <- do.call(rbind, list_example)
+#Converting a matrix to a list:
+
+list <- as.list(matrix_name)
+#Converting a data frame to a list:
+
+list <- as.list(df)
+# Create a simple list
+mylist <- list(a = 1, b = 2, c = 3)
+
+# Convert the list to a data frame
+mydf <- do.call(rbind, mylist)
+
+```
+
+
+
+# Special Data structure : date and factor
+```{r}
+# Date creation
+today <- as.Date("2022-01-03")
+# operations  
+next_week <- today + 7
+prev_month <- today - 30
+# comparing 
+is_weekend <- c("2022-01-01", "2022-01-02", "2022-01-03")
+is_weekend == today
+# formatting 
+format(today, format = "%A, %B %d, %Y")
+# converting 
+date_vector <- c("2022-01-01", "2022-01-02", "2022-01-03")
+as.Date(date_vector, format = "%Y-%m-%d")
+
+# Create a date object
+date <- as.Date("2022-05-15")
+
+# Extract the day, month, and year
+day <- strftime(date, format = "%d")
+month <- strftime(date, format = "%m")
+year <- strftime(date, format = "%Y")
+
+# Print the results
+print(day)
+print(month)
+print(year)
+
+```
+### as.POSIXlt or as.POSIXct
+They provide more information and functionality than the "Date" class. For example, you can easily extract the hour, minute, and second information from a POSI.
+```{r}
+# create date object
+date_string <- "2022-01-03 12:00:00"
+date_object <- as.POSIXct(date_string, format = "%Y-%m-%d %H:%M:%S")
+
+# convert to POSIXlt format, list
+date_list <- as.POSIXlt(date_object)
+
+# print the list
+date_list
+day <- strftime(date_object, format = "%d")
+print(paste0("number of day is ",day))
+```
+### Factor 
+```{r}
+# Creating a factor from a vector of character strings
+x <- c("red", "blue", "green", "red")
+f <- factor(x)
+
+# Creating a factor from a vector of integers
+x <- c(1, 2, 3, 2)
+f <- factor(x)
+
+# Creating a factor with specific levels
+x <- c("red", "blue", "green", "yellow")
+f <- factor(x, levels = c("red", "blue", "green", "yellow"))
+print(f)
+```
+
+
+
+# Functions 
+Such as :: seq(), rep(),sum(),mean(), sort().......................
+
+**help** --> $help(sum)$
+```{r}
+# 1 t0 20 by 2
+seq(1,20,2)
+#  1 , 10th time repeat
+rep(1,10)
+rep(c('A','AA','B'),10)
+rep(c('A','AA','B'),times=c(1,3,2))
+# sqrt
+sqrt(c(16,25,64))
+# sum
+sum(c(16,25,64))
+# Mean
+mean(c(16,25,64))
+# standard deviation
+sd(c(16,25,64))
+```
+
+
+### Own functions
+```{r}
+my_multiply_function <- function(x, y) {
+  result <- x * y
+  return(result)
+}
+my_multiply_function(2, 3) # returns 6
+my_multiply_function(4, 5) # returns 20
+
+```
+
+# Package installation and uninstallation
+The most common method is to use the install.packages() function. For example, to install the ggplot2 package, you would use the following command:
+
+**$install.packages("ggplot2")$**
+and for removing 
+**$remove.packages("ggplot2")$**
+
+# Looping Function 
+1. lapply: evaluate a function for each element of a list
+2. sapply: evaluate a function for each element of a list simplifying the result
+3. apply: Apply a function over the margins of an array (usually to apply a function to the rows/columns in a matrix)
+4. tapply: Apply a function over subsets of a vector (for example defined with a factor)
+5. mapply: Multivariate version of lapply
